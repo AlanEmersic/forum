@@ -1,54 +1,78 @@
 package com.app.forum.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-public class Post
-{
+@Table(name = "Post")
+public class Post implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String comment;
     private Timestamp timestamp;
 
-    private int userID;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "userid")
+    private User userid;
 
-//    @ManyToOne()
-//    @JoinTable(name = "userPost", joinColumns = @JoinColumn(name = "userID"), inverseJoinColumns = @JoinColumn(name = "user"))
-//    private User user;
-
-    public Post()
-    {
+    public Post() {
 
     }
 
-    public Post(int id, int userID, String comment, Timestamp timestamp)
-    {
-        this.id = id;
-        this.userID = userID;
+    public Post(String comment, Timestamp timestamp) {
         this.comment = comment;
         this.timestamp = timestamp;
     }
 
-    public int getId()
-    {
+    public Post(Long id, String comment, Timestamp timestamp, User userid) {
+        this.id = id;
+        this.comment = comment;
+        this.timestamp = timestamp;
+        this.userid = userid;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public int getUserID()
-    {
-        return userID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getComment()
-    {
+    public String getComment() {
         return comment;
     }
 
-    public Timestamp getTimestamp()
-    {
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Timestamp getTimestamp() {
         return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public User getUserid() {
+        return userid;
+    }
+
+    public void setUserid(User userid) {
+        this.userid = userid;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", comment='" + comment + '\'' +
+                ", timestamp=" + timestamp +
+                ", userid=" + userid +
+                '}';
     }
 }

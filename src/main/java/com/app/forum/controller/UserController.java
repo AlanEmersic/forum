@@ -1,14 +1,18 @@
 package com.app.forum.controller;
 
-import com.app.forum.model.User;
+import com.app.forum.DTO.UserDTO;
+import com.app.forum.command.UserCommand;
 import com.app.forum.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/users")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController
 {
     private UserService userService;
@@ -18,47 +22,27 @@ public class UserController
         this.userService = userService;
     }
 
-    @PostMapping(path = {"/register"})
-    public ResponseEntity<?> addUser(@RequestBody User user)
-    {
-        return ResponseEntity.ok(userService.addUser(user));
+    @GetMapping
+    public List<UserDTO> getAllUsers() {
+        return userService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public void getUserById(@PathVariable int id)
-    {
-        userService.getUser(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable final String username) {
+        return userService.findByUsername(username).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping(path = {"", "/"})
-    public ResponseEntity<?> getUsers()
-    {
-        return ResponseEntity.ok(userService.getUsers());
+    @PostMapping
+    public ResponseEntity<UserDTO> save(@Valid @RequestBody final UserCommand userCommand) {
+        return userService.save(userCommand)
+                .map(userDTO -> ResponseEntity.status(HttpStatus.CREATED).body(userDTO))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User user)
-    {
-        User updatedUser = userService.updateUser(user);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable int id)
-    {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("user deleted");
-    }
-
-    @PostMapping(path = "/login")
-    public ResponseEntity<?> login(@RequestBody User user)
-    {
-        User getUser = userService.login(user);
-
-        if (getUser != null)
-            return ResponseEntity.ok("Login");
-        else
-            return ResponseEntity.ok("User not found");
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{username}")
+    public void delete(@PathVariable String username){
+        userService.delete(username);
     }
 }
