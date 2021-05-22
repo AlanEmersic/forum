@@ -2,9 +2,11 @@ package com.app.forum.controller;
 
 import com.app.forum.DTO.UserDTO;
 import com.app.forum.command.UserCommand;
+import com.app.forum.security.SecurityUtils;
 import com.app.forum.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,9 +42,18 @@ public class UserController
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @Secured("ROLE_ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{username}")
     public void delete(@PathVariable String username){
         userService.delete(username);
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        return SecurityUtils.getCurrentUserUsername()
+                .map(username -> userService.findByUsername(username).map(ResponseEntity::ok).orElseGet(
+                                        () -> ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build());
     }
 }

@@ -31,7 +31,7 @@ public class PostController {
         return postService.findAllByUsername(username);
     }
 
-    @PostMapping()
+    @PostMapping(params = "username")
     public ResponseEntity<PostDTO> save(@Valid @RequestBody final PostCommand postCommand, @RequestParam String username) {
         return postService.save(postCommand, username)
                 .map(postDTO -> ResponseEntity.status(HttpStatus.CREATED).body(postDTO))

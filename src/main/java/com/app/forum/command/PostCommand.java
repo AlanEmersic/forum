@@ -9,7 +9,7 @@ public class PostCommand {
 
     @NotBlank(message = "comment must not be empty")
     private String comment;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm:ss", timezone = "Europe/Zagreb")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy. HH:mm:ss")
     private Timestamp timestamp;
 
     public String getComment() {

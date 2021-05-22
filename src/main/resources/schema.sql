@@ -23,14 +23,14 @@ constraint fk_userid foreign key (userid) references user(id) on delete cascade
 --     last_name varchar(250) not null
 --     );
 
--- create table if not exists authority(
--- id   identity,
--- name varchar(100) not null
--- );
---
--- create table if not exists user_authority(
--- user_id      bigint not null,
--- authority_id bigint not null,
--- constraint fk_user foreign key (user_id) references user(id),
--- constraint fk_authority foreign key (authority_id) references authority(id)
--- );
+create table if not exists authority(
+id   identity,
+name varchar(100) not null
+);
+
+create table if not exists user_authority(
+user_id      bigint not null,
+authority_id bigint not null,
+constraint fk_user foreign key (user_id) references user(id),
+constraint fk_authority foreign key (authority_id) references authority(id)
+);
