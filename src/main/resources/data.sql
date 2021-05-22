@@ -1,7 +1,7 @@
 insert into user (id, username, password, email)
-values (1, 'admin', '$2a$10$TYExkmI7uVXXVadrdTTa0OQTOorVV32jTjK.Py2BPQjEojbAx96yy', 'admin@admin.com'); --password=test
+values (1, 'admin', '$2y$12$.OWb.CCkBYZIiTy2rLWsHeK11DatFWgMk/bVY0TSfg7HeTG3GmXWm', 'admin@admin.com'); --password=test
 insert into user (id, username, password, email)
-values (2, 'user', '$2a$10$TYExkmI7uVXXVadrdTTa0OQTOorVV32jTjK.Py2BPQjEojbAx96yy', 'user@user.com'); --password=test
+values (2, 'user', '$2y$12$.OWb.CCkBYZIiTy2rLWsHeK11DatFWgMk/bVY0TSfg7HeTG3GmXWm', 'user@user.com'); --password=test
 
 insert into post (id, comment, timestamp, userid)
 values (1, 'Admin comment', '2020-01-01 12:10:00', 1);

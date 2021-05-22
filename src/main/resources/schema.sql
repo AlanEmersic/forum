@@ -15,14 +15,6 @@ primary key (id),
 constraint fk_userid foreign key (userid) references user(id) on delete cascade
 );
 
--- create table if not exists user(
--- id       identity,
---     username varchar(100) not null,
---     password varchar(250) not null,
---     first_name varchar(250) not null,
---     last_name varchar(250) not null
---     );
-
 create table if not exists authority(
 id   identity,
 name varchar(100) not null
